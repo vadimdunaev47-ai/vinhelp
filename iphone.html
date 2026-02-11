@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOTUL SELECTION · премиум подбор масла</title>
+  <!-- Имитация премиального авто-сервиса, анимации, жижа, VIN -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b1217;
+      background-image: radial-gradient(circle at 25% 10%, rgba(30, 70, 90, 0.3) 0%, transparent 35%),
+                      radial-gradient(circle at 75% 80%, rgba(180, 140, 60, 0.2) 0%, transparent 40%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      color: #f0f5fa;
+      line-height: 1.5;
+    }
+
+    /* карбоново-металлический каркас */
+    .oil-cabinet {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(10, 22, 28, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(210, 180, 100, 0.25);
+      border-radius: 48px 48px 40px 40px;
+      box-shadow: 0 25px 40px -10px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255, 215, 120, 0.1);
+      padding: 2.5rem;
+      transition: all 0.3s;
+    }
+
+    /* шапка с люкс-эффектом */
+    .header-premium {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px dashed rgba(230, 190, 80, 0.4);
+      padding-bottom: 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .oil-drop {
+      background: linear-gradient(145deg, #e5c87b, #b38b40);
+      width: 48px;
+      height: 48px;
+      border-radius: 0 60% 60% 60%;
+      transform: rotate(45deg);
+      box-shadow: 0 6px 18px rgba(230, 190, 80, 0.5);
+      position: relative;
+      animation: subtleDrop 3s infinite ease-in-out;
+    }
+
+    @keyframes subtleDrop {
+      0% { transform: rotate(45deg) scale(1); opacity: 1; }
+      50% { transform: rotate(45deg) scale(1.05); opacity: 0.95; }
+      100% { transform: rotate(45deg) scale(1); opacity: 1; }
+    }
+
+    .logo-text {
+      font-weight: 600;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #f5e7c8, #dbbd9b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .vin-badge {
+      background: rgba(20, 35, 45, 0.8);
+      padding: 0.7rem 1.6rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid rgba(255,200,100,0.4);
+      backdrop-filter: blur(4px);
+      color: #ffeac2;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+    }
+
+    .glass-panel {
+      background: rgba(18, 32, 38, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 215, 100, 0.2);
+      border-radius: 32px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 0 rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #ffde9e;
+      letter-spacing: 0.5px;
+    }
+
+    h2 span {
+      background: #c9a063;
+      color: #0b1519;
+      border-radius: 50px;
+      padding: 0.2rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* поле VIN с анимацией фокуса */
+    .vin-area {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 20px;
+      margin-top: 0.8rem;
+    }
+
+    .input-group {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #b9cfd4;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .premium-input {
+      width: 100%;
+      background: rgba(8, 20, 26, 0.9);
+      border: 1.5px solid rgba(230, 190, 90, 0.5);
+      border-radius: 18px;
+      padding: 1rem 1.3rem;
+      font-size: 1.1rem;
+      color: #f3efd9;
+      font-weight: 400;
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .premium-input:focus {
+      border-color: #fccf7c;
+      outline: none;
+      background: #0f1e24;
+      box-shadow: 0 0 0 3px rgba(255, 200, 100, 0.2), inset 0 2px 8px black;
+    }
+
+    .premium-input::placeholder {
+      color: #899fa5;
+      font-weight: 300;
+      font-size: 0.95rem;
+    }
+
+    .btn-gold {
+      background: linear-gradient(145deg, #c8a864, #9c7c48);
+      border: none;
+      border-radius: 40px;
+      padding: 1rem 2.8rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #0f1a1e;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      border-bottom: 4px solid #6a4f2b;
+      transition: 0.12s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 0 #4d3a1f, 0 12px 28px rgba(0,0,0,0.6);
+    }
+
+    .btn-gold:hover {
+      background: linear-gradient(145deg, #ddbc78, #ad8b4a);
+      border-bottom-width: 2px;
+      transform: translateY(2px);
+      box-shadow: 0 4px 0 #4d3a1f, 0 16px 30px rgba(200,170,80,0.3);
+    }
+
+    .btn-gold:active {
+      transform: translateY(6px);
+      border-bottom-width: 0px;
+      box-shadow: 0 2px 0 #4d3a1f;
+    }
+
+    /* карточка результата — премиум анимация появления */
+    .result-lubricant {
+      margin-top: 30px;
+      background: rgba(15, 35, 40, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      border-radius: 28px;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      animation: slideReveal 0.5s ease-out;
+      transition: all 0.2s;
+    }
+
+    @keyframes slideReveal {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .oil-bottle {
+      width: 110px;
+      height: 180px;
+      background: radial-gradient(circle at 40% 30%, #35281a, #1e1a14);
+      border-radius: 30% 30% 20% 20% / 40% 40% 20% 20%;
+      position: relative;
+      border: 2px solid #aa8e5a;
+      box-shadow: 0 12px 28px black;
+    }
+
+    .liquid-fill {
+      position: absolute;
+      bottom: 16px;
+      left: 12px;
+      right: 12px;
+      height: 100px;
+      background: linear-gradient(145deg, #edc531, #b8821a);
+      border-radius: 8px 8px 30% 30%;
+      box-shadow: inset 0 -4px 10px rgba(0,0,0,0.6), 0 0 16px #ffd966;
+      animation: liquidWave 4s infinite alternate ease-in-out;
+    }
+
+    @keyframes liquidWave {
+      0% { border-radius: 8px 8px 35% 25% ; background: #e0b332; }
+      100% { border-radius: 10px 6px 25% 35% ; background: #ffcd4d; }
+    }
+
+    .specs {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .oil-title {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #ffe9b6, #dbb45c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    .viscosity {
+      font-size: 1.2rem;
+      color: #bcd5db;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .viscosity span {
+      background: #1c333b;
+      padding: 0.3rem 1.2rem;
+      border-radius: 24px;
+      border-left: 4px solid #ebc25e;
+      font-weight: 600;
+      color: #fff6df;
+    }
+
+    .fluid-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .fluid-item {
+      background: rgba(200, 175, 80, 0.1);
+      border: 1px solid rgba(255, 200, 20, 0.4);
+      border-radius: 60px;
+      padding: 0.5rem 1.4rem;
+      font-size: 0.95rem;
+      color: #fbeba0;
+    }
+
+    .part-number {
+      font-family: monospace;
+      background: #101e22;
+      padding: 0.4rem 1.2rem;
+      border-radius: 14px;
+      color: #c9ae70;
+      border: 1px dashed #a38e4a;
+      margin-top: 12px;
+      display: inline-block;
+    }
+
+    /* анимация капель — фон */
+    .drops-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* карточки масел (пресеты) */
+    .oils-grid {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .oil-preset {
+      background: rgba(20, 35, 38, 0.7);
+      border-radius: 20px;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid #4f5d5b;
+      flex: 1 1 160px;
+      backdrop-filter: blur(10px);
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+
+    .oil-preset:hover {
+      border-color: #fad15e;
+      background: #1c2f35;
+      transform: scale(1.01);
+      box-shadow: 0 8px 18px black;
+    }
+
+    .preset-title {
+      font-weight: 700;
+      color: #ecd08c;
+    }
+
+    small {
+      color: #9ab7c0;
+    }
+
+    /* адаптив */
+    @media (max-width: 800px) {
+      .oil-cabinet { padding: 1.5rem; }
+      .header-premium { flex-direction: column; align-items: start; gap: 15px; }
+    }
+
+    /* микро-анимации прелоада */
+    .invisible {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- премиум-интерфейс: подбор масла, жидкостей, VIN -->
+  <div class="oil-cabinet">
+    <!-- хедер с визуальным весом -->
+    <div class="header-premium">
+      <div class="logo">
+        <div class="oil-drop"></div>
+        <span class="logo-text">LUBRI•TECH</span>
+      </div>
+      <div class="vin-badge">
+        ⚙️ ПОДБОР ПО VIN • ОРИГИНАЛЬНЫЕ СПЕЦИФИКАЦИИ
+      </div>
+    </div>
+
+    <!-- ОСНОВНАЯ ПАНЕЛЬ: ПОИСК ПО ВИН И ПАРАМЕТРАМ -->
+    <div class="glass-panel">
+      <h2>
+        <span>🔍 01</span> Идентификация автомобиля
+      </h2>
+      <!-- поле VIN и марка/модель — всё премиально плавное -->
+      <div class="vin-area">
+        <div class="input-group">
+          <label>VIN‑код (17 символов)</label>
+          <input type="text" class="premium-input" id="vinInput" placeholder="WF0MXXGBWM8R12345" maxlength="17" value="WBAJB11040BZ12345">
+        </div>
+        <div class="input-group" style="flex:0.7">
+          <label>Двигатель / модификация</label>
+          <input type="text" class="premium-input" id="engineMod" placeholder="напр. B47D20, 2.0d" value="B48B20 2.0 Turbo">
+        </div>
+        <button class="btn-gold" id="searchBtn">
+          <span style="font-size:1.4rem;">⟳</span> ПОДОБРАТЬ
+        </button>
+      </div>
+
+      <!-- быстрый выбор премиум-классов (анимация через js не обязательна, но для красоты) -->
+      <div style="margin-top: 28px; display: flex; gap: 12px; align-items: center;">
+        <span style="color:#c7d5b3; text-transform: uppercase; font-size:0.75rem;">Популярные спецификации:</span>
+        <div class="oils-grid">
+          <div class="oil-preset" data-preset="bmw">
+            <span class="preset-title">BMW LL-17</span><br>
+            <small>BMW Longlife-17</small>
+          </div>
+          <div class="oil-preset" data-preset="mb">
+            <span class="preset-title">MB 229.52</span><br>
+            <small>Mercedes-Benz</small>
+          </div>
+          <div class="oil-preset" data-preset="vw">
+            <span class="preset-title">VW 504.00</span><br>
+            <small>Volkswagen/Audi</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- КОНТЕЙНЕР РЕЗУЛЬТАТА ПОДБОРА — сюда встраиваем динамику, масло/жижи -->
+    <div id="resultContainer">
+      <!-- по умолчанию скрыт, но для красоты покажем демо-результат сразу -->
+      <div class="result-lubricant" id="oilResultCard">
+        <div class="oil-bottle">
+          <div class="liquid-fill"></div>
+        </div>
+        <div class="specs">
+          <div class="oil-title">MOTUL 8100 X‑clean</div>
+          <div class="viscosity">
+            <span>5W-30</span>
+            <span>API SN</span>
+            <span>ACEA C3</span>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div class="fluid-item">🧴 Масло в двигатель — 5.2 л</div>
+            <div class="fluid-item">🧪 Фильтр масляный HU711/51x</div>
+          </div>
+          <div class="fluid-row">
+            <div class="fluid-item">❄️ Антифриз G13 — 8.5 л (синий)</div>
+            <div class="fluid-item">⚙️ Трансмиссия ATF DCT‑F</div>
+          </div>
+          <div class="part-number">
+            <span style="font-weight:300;">🔖 Артикул OEM: </span> 83 21 2 365 789  •  MOTUL 114876
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- дополнительный блок: табличка жиж / смазок -->
+    <div style="display: flex; justify-content: space-between; margin-top: 30px; color: #beb07c; border-top: 1px solid #4c634b; padding-top: 22px; font-size: 0.85rem;">
+      <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+        <div style="display:flex; align-items:center;">🧽 <span style="margin-left:6px;">Очиститель дросселя: 200ml</span></div>
+        <div style="display:flex; align-items:center;">🛢️ Промывка: Motul Engine Flush</div>
+        <div style="display:flex; align-items:center;">🌡️ Тосол концентрат: 1.5л</div>
+      </div>
+      <div style="color:#efd48a;">✔️ соответствует допускам BMW</div>
+    </div>
+  </div>
+
+  <!-- микро JS: премиум-анимация, подмена подбора масел, VIN-живость -->
+  <script>
+    (function() {
+      "use strict";
+
+      // база данных премиум-масел и жидкостей — под разные авто
+      const oilDatabase = [
+        {
+          vinPrefix: ['WBA', 'WBS', 'WBY'],
+          name: 'LIQUI MOLY Molygen New Generation',
+          viscosity: '5W-40',
+          specs: ['API SP', 'ACEA A3/B4'],
+          engineOil: '4.8 л',
+          filter: 'Filtech O-249',
+          antifreeze: 'G12+ красный — 7.0 л',
+          transmission: 'ATF 1800',
+          oem: '83 22 2 358 994',
+          brand: 'liqui'
+        },
+        {
+          vinPrefix: ['VF1', 'VF3', 'VIN'],
+          name: 'ELF Evolution Full-Tech',
+          viscosity: '0W-30',
+          specs: ['RN0720', 'ACEA C2'],
+          engineOil: '5.0 л',
+          filter: 'Hengst H14W03',
+          antifreeze: 'Glysantin G33 — 6.5 л',
+          transmission: 'CVT Fluid',
+          oem: '77 01 474 002',
+        },
+        {
+          vinPrefix: ['WAU', 'WUA', 'TRU'],
+          name: 'CASTROL Edge Titanium FST',
+          viscosity: '0W-20',
+          specs: ['VW 508.00', 'MB 229.71'],
+          engineOil: '5.6 л',
+          filter: 'MANN W 914/14',
+          antifreeze: 'G12 evo — 7.8 л',
+          transmission: 'DSG DCTF',
+          oem: 'G 055 529 A2',
+        },
+        {
+          vinPrefix: ['JHM', 'JTH', 'SAL'],
+          name: 'IDEMITSU Zepro Euro Spec',
+          viscosity: '5W-30',
+          specs: ['ACEA C3', 'API SN'],
+          engineOil: '4.7 л',
+          filter: 'VIC C-809',
+          antifreeze: 'Toyota Super Long Life — 6.3 л',
+          transmission: 'ATF WS',
+          oem: '08886-02305',
+        }
+      ];
+
+      // дефолтный вариант — Motul, показан при старте
+      const defaultResult = {
+        name: 'MOTUL 8100 X‑clean',
+        viscosity: '5W-30',
+        specs: ['API SN', 'ACEA C3'],
+        engineOil: '5.2 л',
+        filter: 'HU711/51x',
+        antifreeze: 'G13 синий — 8.5 л',
+        transmission: 'ATF DCT‑F',
+        oem: '83 21 2 365 789 • MOTUL 114876'
+      };
+
+      const vinInput = document.getElementById('vinInput');
+      const engineMod = document.getElementById('engineMod');
+      const searchBtn = document.getElementById('searchBtn');
+      const resultContainer = document.getElementById('resultContainer');
+
+      // функция отрисовки карточки масла/жижи — анимированно
+      function renderOilCard(data) {
+        // полная стилизация под премиум.
+        const cardHtml = `
+          <div class="result-lubricant" id="oilResultCard" style="animation: slideReveal 0.4s cubic-bezier(0.2,0.9,0.3,1);">
+            <div class="oil-bottle">
+              <div class="liquid-fill" style="background: linear-gradient(145deg, #eac452, #c6921e);"></div>
+            </div>
+            <div class="specs">
+              <div class="oil-title">${data.name}</div>
+              <div class="viscosity">
+                <span>${data.viscosity}</span>
+                ${data.specs.map(s => `<span>${s}</span>`).join('')}
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <div class="fluid-item">🧴 Масло в двигатель — ${data.engineOil}</div>
+                <div class="fluid-item">🧪 Фильтр масляный ${data.filter}</div>
+              </div>
+              <div class="fluid-row">
+                <div class="fluid-item">❄️ ${data.antifreeze}</div>
+                <div class="fluid-item">⚙️ ${data.transmission}</div>
+              </div>
+              <div class="part-number">
+                <span style="font-weight:300;">🔖 Артикул OEM: </span> ${data.oem}
+              </div>
+            </div>
+          </div>
+        `;
+        resultContainer.innerHTML = cardHtml;
+      }
+
+      // имитация подбора по VIN/мотору
+      function selectOilByVIN(vin, mod) {
+        if (!vin || vin.length < 3) {
+          // возвращаем дефолт
+          return { ...defaultResult };
+        }
+        const upperVin = vin.toUpperCase();
+        // пытаемся подобрать по префиксу
+        const matched = oilDatabase.find(entry => 
+          entry.vinPrefix.some(prefix => upperVin.startsWith(prefix))
+        );
+        if (matched) {
+          return {
+            name: matched.name,
+            viscosity: matched.viscosity,
+            specs: matched.specs,
+            engineOil: matched.engineOil,
+            filter: matched.filter,
+            antifreeze: matched.antifreeze,
+            transmission: matched.transmission,
+            oem: matched.oem
+          };
+        } else {
+          // если не нашли — европейский премиум
+          if (mod && mod.toLowerCase().includes('diesel')) {
+            return {
+              name: 'SHELL Helix Ultra ECT C3',
+              viscosity: '5W-30',
+              specs: ['ACEA C3', 'MB 229.31'],
+              engineOil: '5.5 л',
+              filter: 'MANN HU 719/8 x',
+              antifreeze: 'G30 синий — 7.2 л',
+              transmission: 'ATF 134',
+              oem: '83 21 2 289 998'
+            };
+          }
+          return {
+            name: 'TOTAL Quartz INEO Long Life',
+            viscosity: '0W-30',
+            specs: ['BMW LL-04', 'ACEA C2'],
+            engineOil: '5.0 л',
+            filter: 'Mahle OX 405D',
+            antifreeze: 'G48 grün — 7.5 л',
+            transmission: 'ESSO LT 71141',
+            oem: '11 42 7 511 559'
+          };
+        }
+      }
+
+      // событие на кнопку
+      searchBtn.addEventListener('click', function() {
+        const vin = vinInput.value.trim();
+        const mod = engineMod.value.trim();
+        const selectedOil = selectOilByVIN(vin, mod);
+        renderOilCard(selectedOil);
+      });
+
+      // обработка пресетов (клик на допуски)
+      const presets = document.querySelectorAll('.oil-preset');
+      presets.forEach((preset, index) => {
+        preset.addEventListener('click', function(e) {
+          // быстрый подбор под популярные допуски — премиум интерактив
+          let fakeVin = '';
+          if (this.dataset.preset === 'bmw') { fakeVin = 'WBAJB11040BZ98321'; engineMod.value = 'B48B20'; }
+          else if (this.dataset.preset === 'mb') { fakeVin = 'WDD2050011R123456'; engineMod.value = 'OM654'; }
+          else if (this.dataset.preset === 'vw') { fakeVin = 'WAUZZZ8V9EA123456'; engineMod.value = 'CJSA 2.0T'; }
+          vinInput.value = fakeVin;
+          // вызываем поиск с новыми данными
+          const selectedOil = selectOilByVIN(fakeVin, engineMod.value);
+          renderOilCard(selectedOil);
+        });
+      });
+
+      // инициализация — оставляем мотюль, но если хочется можно обновить при загрузке, чтобы соответствовало VIN по умолчанию
+      window.addEventListener('load', function() {
+        // при загрузке VIN = WBAJB11040BZ12345 => подбираем под BMW (WBA)
+        const initVin = vinInput.value;
+        const initMod = engineMod.value;
+        const initOil = selectOilByVIN(initVin, initMod);
+        renderOilCard(initOil);
+      });
+    })();
+  </script>
+
+  <!-- маленькая анимация: капли на фоне (стилизовано) -->
+  <div class="drops-bg" style="opacity:0.2;"></div>
+</body>
+</html>
